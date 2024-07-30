@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
               DrawerButton(
                 icon: CupertinoIcons.profile_circled,
                 buttonTitle: "Profile",
-                tileColor: selectedTile == 0 ? MyColors.buttonDrawerBg : Colors.white,
+                tileColor: selectedTile == 0 ? MyColors.drawerButtonBg : Colors.white,
                 onTap: () {
                   setState(() {
                     selectedTile = 0;
@@ -74,7 +74,7 @@ class _HomePageState extends State<HomePage> {
               DrawerButton(
                 icon: CupertinoIcons.person_2_alt,
                 buttonTitle: "Customer",
-                tileColor: selectedTile == 1 ? MyColors.buttonDrawerBg : Colors.white,
+                tileColor: selectedTile == 1 ? MyColors.drawerButtonBg : Colors.white,
                 onTap: () {
                   setState(() {
                     selectedTile = 1;
@@ -91,7 +91,7 @@ class _HomePageState extends State<HomePage> {
               DrawerButton(
                 icon: Icons.logout,
                 buttonTitle: "Logout",
-                tileColor: selectedTile == 5 ? MyColors.buttonDrawerBg : Colors.white,
+                tileColor: selectedTile == 5 ? MyColors.drawerButtonBg : Colors.white,
                 onTap: () {
                   setState(() {
                     selectedTile = 5;
