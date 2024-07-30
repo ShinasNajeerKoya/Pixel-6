@@ -163,6 +163,34 @@ class _AddressListingPageState extends State<AddressListingPage> {
 
   ///
 
+  ///
+  // validation starts
+  //validation for postcode
+  void _validatePostcode(String postcode) {
+    final regex = RegExp(r'^\d{6}$'); // validation for 6 consecutive digits only
+    if (regex.hasMatch(postcode)) {
+      setState(() {
+        isPostcodeValid = true;
+        postcodeErrorMessage = null;
+      });
+    } else {
+      setState(() {
+        isPostcodeValid = false;
+        postcodeErrorMessage = 'Enter a valid 6-digit postcode';
+      });
+    }
+  }
+
+  // validation to check all the required areas are filled or not
+  void _validateAddress() {
+    setState(() {
+      isAddressValid = line1AddressController.text.isNotEmpty &&
+          isPostcodeValid &&
+          cityAddressController.text.isNotEmpty &&
+          stateAddressController.text.isNotEmpty;
+    });
+  }
+
   @override
   void dispose() {
     line1AddressController.dispose();
