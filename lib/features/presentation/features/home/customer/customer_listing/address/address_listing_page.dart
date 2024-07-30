@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:pixel6_test/core/constants/local_keys.dart';
+import 'package:pixel6_test/features/data/models/postcode_details_model.dart' as postcode_model;
+import 'package:pixel6_test/features/data/service/postcode_service.dart';
 import 'package:pixel6_test/features/presentation/widgets/custom_button.dart';
 import 'package:pixel6_test/features/presentation/widgets/custom_text.dart';
 import 'package:pixel6_test/features/presentation/widgets/custom_textfield.dart';
@@ -111,6 +113,52 @@ class _AddressListingPageState extends State<AddressListingPage> {
       addressesString.add(jsonEncode(address));
     }
     await prefs.setStringList('addresses', addressesString);
+  }
+
+  ///
+
+  ///
+// for api response handling for the postcode
+  Future<void> _fetchCityStateDetails() async {
+    setState(() {
+      isLoading = true; // Show loading indicator
+    });
+
+    try {
+      final response = await fetchPostcodeDetails(postcodeAddressController.text);
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (data['status'] == 'Success') {
+          final postcodeDetails = postcode_model.PostcodeDetails.fromJson(data);
+          setState(() {
+            cityAddressController.text = postcodeDetails.city[0].name;
+            stateAddressController.text = postcodeDetails.state[0].name;
+          });
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: CustomText(
+                title: 'Invalid postcode',
+              ),
+            ),
+          );
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Failed to load address details')),
+        );
+      }
+    } catch (e) {
+      print('Error fetching postcode details: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Something unexpected happened, Please try again.')),
+      );
+    }
+
+    setState(() {
+      isLoading = false; // to hide loading indicator
+    });
   }
 
   ///
