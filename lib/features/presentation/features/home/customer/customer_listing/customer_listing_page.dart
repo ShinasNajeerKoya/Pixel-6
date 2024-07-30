@@ -38,6 +38,66 @@ class _CustomerListingPageState extends State<CustomerListingPage> {
   FocusNode? currentFocusNode;
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  // validation
+  // pan validation
+  void _validatePanNumber() {
+    final panNumber = kPanAddressController.text;
+    final regex = RegExp(
+        r'^[A-Z]{5}[0-9]{4}[A-Z]{1}$'); // in this the first five character will be alphabets and followed by four digits and followed by single character.
+
+    setState(() {
+      isPanValid = regex.hasMatch(panNumber);
+      panError = isPanValid ? "" : "Invalid PAN format";
+      _validateForm();
+    });
+  }
+
+  // validation logic for email
+  void _validateEmail(){
+    final email = emailAddressController.text;
+    final regex = RegExp(r'^[^@]+@[^@]+\.[^@]+$');
+
+    setState(() {
+      isEmailValid = regex.hasMatch(email);
+      emailError = isEmailValid ? "" : "Invalid email format";
+      _validateForm();
+    });
+  }
+
+  void _validatePhoneNumber(){
+    final phone = phoneAddressController.text;
+    final regex = RegExp(r'^\d{10}$'); // in this it will check for ten digits
+    setState(() {
+      isPhoneValid = regex.hasMatch(phone);
+      phoneError = isPhoneValid ? "" : "Invalid phone number format";
+      _validateForm();
+    });
+  }
+
+  // to validate the text fields if the value is valid and empty or not
+  void _validateForm() {
+    setState(() {
+      bool isFormValid = isPanValid &&
+          isEmailValid &&
+          isPhoneValid &&
+          selectedAddressId != null &&
+          selectedAddressId!.isNotEmpty;
+      if (addresses.isEmpty) {
+        isFormValid = false;
+      }
+      isFormValid = isPanValid &&
+          isEmailValid &&
+          isPhoneValid &&
+          selectedAddressId != null &&
+          selectedAddressId!.isNotEmpty;
+    });
+  }
+
+  @override
   void dispose() {
     // kPanAddressController.removeListener();
     // emailAddressController.removeListener();
