@@ -37,12 +37,21 @@ class _AddressListingPageState extends State<AddressListingPage> {
     if (widget.addressId != null) {
       _loadAddressDetails(widget.addressId!);
     }
+
+    line1AddressController.addListener(_validateAddress);
+    postcodeAddressController.addListener(() {
+      _validatePostcode(postcodeAddressController.text);
+      _validateAddress();
+    });
+    cityAddressController.addListener(_validateAddress);
+    stateAddressController.addListener(_validateAddress);
   }
 
   // to load the address if any already stored in shared prefs
   Future<void> _loadAddressDetails(String addressId) async {
     setState(() {
       // for the loading indicator
+      isLoading = true;
     });
 
     try {
@@ -58,11 +67,13 @@ class _AddressListingPageState extends State<AddressListingPage> {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: CustomText(
         title: 'Failed to load address details',
+        fontSize: 15,
       )));
     }
 
     setState(() {
       // to end the loading indicator
+      isLoading = false;
     });
   }
 
@@ -80,6 +91,7 @@ class _AddressListingPageState extends State<AddressListingPage> {
   Future<void> _saveAddress() async {
     setState(() {
       // for the loading indicator
+      isLoading = true;
     });
 
     try {
@@ -100,6 +112,7 @@ class _AddressListingPageState extends State<AddressListingPage> {
     }
     setState(() {
       // to end the loading indicator
+      isLoading = false;
     });
   }
 
@@ -137,7 +150,7 @@ class _AddressListingPageState extends State<AddressListingPage> {
           });
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
+            const SnackBar(
               content: CustomText(
                 title: 'Invalid postcode',
               ),
@@ -191,6 +204,9 @@ class _AddressListingPageState extends State<AddressListingPage> {
     });
   }
 
+  // validation ends
+  ///
+
   @override
   void dispose() {
     line1AddressController.dispose();
@@ -241,7 +257,7 @@ class _AddressListingPageState extends State<AddressListingPage> {
                     hintText: MyLocalKeys.postCodeHintText,
                     padding: const EdgeInsets.only(left: 25, right: 15),
                     onChanged: (postcode) {
-                      /// validating postcode here
+                      _validatePostcode(postcode);
                     },
                     suffixIcon: isLoading
                         ? Container(
@@ -263,7 +279,7 @@ class _AddressListingPageState extends State<AddressListingPage> {
                   isEnabled: isPostcodeValid,
                   onTap: isPostcodeValid
                       ? () {
-                          /// after validation postcode api call here
+                          _fetchCityStateDetails();
                         }
                       : null,
                   margin: const EdgeInsets.only(right: 25),
@@ -298,7 +314,7 @@ class _AddressListingPageState extends State<AddressListingPage> {
               isEnabled: isAddressValid,
               onTap: isAddressValid
                   ? () {
-                      /// whole address validation here
+                      _saveAddress();
                     }
                   : null,
               title: widget.addressId == null
