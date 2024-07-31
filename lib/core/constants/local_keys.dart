@@ -1,4 +1,4 @@
-class MyLocalKeys {
+class AppLocalKeys {
   static const blank = '';
   static const panHintText = 'Enter your Pan number';
   static const fullNameHintText = 'Enter your Full Name';
@@ -17,4 +17,7 @@ class MyLocalKeys {
   static const saveAddressButtonText = 'Save Address';
   static const addCustomerButtonText = 'Add Customer';
   static const saveCustomerButtonText = 'Save Customer';
+  static const customers = 'customers';
+  static const customerId = 'customerId';
+  static const addresses = 'addresses';
 }
