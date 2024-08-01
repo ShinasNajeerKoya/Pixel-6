@@ -28,7 +28,9 @@ class CustomerEditBloc extends Bloc<CustomerEditEvent, CustomerEditState> {
   final _inputValidationStatusStreamController = StreamController<Map<InputTypeEnum, bool>>();
 
   Stream<String> get selectedAddressIdStream => _selectedAddressIdStreamController.stream;
+
   Stream<List<AddressModel>> get addressListStream => _addressListStreamController.stream;
+
   Stream<Map<InputTypeEnum, bool>> get inputValidationStatusStream =>
       _inputValidationStatusStreamController.stream;
 
@@ -115,6 +117,9 @@ class CustomerEditBloc extends Bloc<CustomerEditEvent, CustomerEditState> {
       emit(AddressDeletingState());
 
       await deleteAddressUseCase.deleteSelectedAddress(event.index).then((result) {
+        if (event.addressId.isNotEmpty) {
+          add(const LoadAllAddressDataEvent());
+        }
         emit(AddressDeletedState(result));
       });
     } catch (e) {
@@ -207,12 +212,12 @@ class CustomerEditBloc extends Bloc<CustomerEditEvent, CustomerEditState> {
     _selectedAddressIdStreamController.add(id);
   }
 
-  void _updateValidationStatus(InputTypeEnum inputType, bool status) async {
-    final currentStatus = await inputValidationStatusStream.first;
-    final updatedStatus = Map<InputTypeEnum, bool>.from(currentStatus);
-    updatedStatus[inputType] = status;
-    _inputValidationStatusStreamController.add(updatedStatus);
-  }
+// void _updateValidationStatus(InputTypeEnum inputType, bool status) async {
+//   final currentStatus = await inputValidationStatusStream.first;
+//   final updatedStatus = Map<InputTypeEnum, bool>.from(currentStatus);
+//   updatedStatus[inputType] = status;
+//   _inputValidationStatusStreamController.add(updatedStatus);
+// }
 }
 
 enum InputTypeEnum { pan, email, phone }

@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:pixel6_test/core/constants/local_keys.dart';
@@ -10,6 +9,7 @@ import 'package:uuid/uuid.dart';
 
 class CustomerRepository {
   final AddressRepository addressRepository;
+
   CustomerRepository({required this.addressRepository});
 
   Future<List<CustomerModel>> getCustomersList() async {
@@ -19,10 +19,6 @@ class CustomerRepository {
 
     final customerList = prefs.getStringList(AppLocalKeys.customers) ?? [];
 
-    final val1 = jsonDecode(
-        "{\"customerId\":\"e6655174-75a9-4e62-a32c-68913522aa04\",\"fullName\":\"Alpha Tester\",\"email\":\"koyashinaskoya@gmail.com\",\"phone\":\"8088670650\",\"addressId\":\"29b6f3f9-3c50-4fae-a910-184028400765\",\"pan\":\"AAAAA3333A\"}");
-    final val2 = jsonDecode(
-        "{\"customerId\":\"a41d3b0e-edec-4aa3-99b3-73cea69382b0\",\"fullName\":\"Alpha Tester\",\"email\":\"fdff@ff.com\",\"phone\":\"5678987655\",\"pan\":\"FGHHF4577F\",\"addressId\":\"19aec5d1-9ab7-47ab-9f44-31439b0443d1\"}");
     List<Map<String, dynamic>> customersJsonDataList =
         customerList.map((e) => jsonDecode(e) as Map<String, dynamic>).toList();
 
@@ -82,9 +78,11 @@ class CustomerRepository {
   Future<List<CustomerModel>> deleteSelectedCustomer(int index) async {
     final prefs = await SharedPreferences.getInstance();
     final customers = prefs.getStringList(AppLocalKeys.customers) ?? [];
+    print("before : $customers");
     customers.removeAt(index);
-    final updatedCustomerStrings = customers.map((e) => jsonEncode(e)).toList();
-    await prefs.setStringList(AppLocalKeys.customers, updatedCustomerStrings);
+    print("after : $customers");
+    // final updatedCustomerStrings = customers.map((e) => jsonEncode(e)).toList();
+    await prefs.setStringList(AppLocalKeys.customers, customers);
     return getCustomersList();
     //todo:
     // if (customers.isEmpty) {

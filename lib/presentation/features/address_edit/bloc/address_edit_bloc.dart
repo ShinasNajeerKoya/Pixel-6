@@ -53,6 +53,7 @@ class AddressEditBloc extends Bloc<AddressEditEvent, AddressEditState> {
         emit(const AddressErrorState('Failed to load address details'));
       } else {
         emit(AddressLoadedState(address));
+        isPostcodeValid = true;
       }
     } catch (e) {
       emit(const AddressErrorState('Failed to load address details'));
@@ -110,8 +111,6 @@ class AddressEditBloc extends Bloc<AddressEditEvent, AddressEditState> {
       line1AddressController.text = addressModel.line1;
       line2AddressController.text = addressModel.line2;
       postcodeAddressController.text = addressModel.postcode;
-      cityAddressController.text = addressModel.city;
-      stateAddressController.text = addressModel.stateName;
     }
     return addressModel;
   }

@@ -25,8 +25,9 @@ class AddOrEditCustomerDataEvent extends CustomerEditEvent {
 
 class DeleteAddressEvent extends CustomerEditEvent {
   final int index;
+  final String addressId;
 
-  const DeleteAddressEvent(this.index);
+  const DeleteAddressEvent(this.index, {this.addressId = ''});
 }
 
 class VerifyPanNumberEvent extends CustomerEditEvent {

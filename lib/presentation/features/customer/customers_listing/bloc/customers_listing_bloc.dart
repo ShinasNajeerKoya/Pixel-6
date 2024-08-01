@@ -51,7 +51,7 @@ class CustomersListingBloc extends Bloc<CustomersListingEvent, CustomersListingS
         if (value.isNotEmpty) {
           emit(CustomerLoadedState(customers: value, addresses: const []));
         } else {
-          emit(const CustomerErrorState(error: 'Failed to delete customer'));
+          emit(const CustomerErrorState(error: 'No Customers available.'));
         }
       });
     } catch (e) {

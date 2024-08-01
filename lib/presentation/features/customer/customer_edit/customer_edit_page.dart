@@ -239,6 +239,7 @@ class _CustomerEditPageState extends State<CustomerEditPage> {
                                   focusNode: phoneFocusNode,
                                   hintText: AppLocalKeys.phoneNumberHintText,
                                   obscureText: false,
+                                  keyboardType: TextInputType.phone,
                                   prefixText: "+91 |",
                                 ),
                                 // Phone number error message
@@ -298,7 +299,8 @@ class _CustomerEditPageState extends State<CustomerEditPage> {
                                             ),
                                           );
                                           if (confirm == true) {
-                                            customerEditBloc.add(DeleteAddressEvent(index));
+                                            customerEditBloc
+                                                .add(DeleteAddressEvent(index, addressId: address.id));
                                           }
                                         } else if (action == 'Edit') {
                                           await _navigateToEditAddress(addressId: address.id);
