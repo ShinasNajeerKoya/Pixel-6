@@ -73,8 +73,6 @@ class CustomersListingBloc extends Bloc<CustomersListingEvent, CustomersListingS
           final updatedCustomerStrings = updatedCustomers.map((e) => jsonEncode(e)).toList();
           await prefs.setStringList(AppLocalKeys.customers, updatedCustomerStrings);
 
-          // emit(CustomerLoadedState(
-          //     customers: updatedCustomers, addresses: (state as CustomerLoadedState).addresses));
         }
       } catch (e) {
         emit(CustomerErrorState(error: e.toString()));
@@ -91,8 +89,6 @@ class CustomersListingBloc extends Bloc<CustomersListingEvent, CustomersListingS
         final updatedCustomerStrings = updatedCustomers.map((e) => jsonEncode(e)).toList();
         await prefs.setStringList(AppLocalKeys.customers, updatedCustomerStrings);
 
-        // emit(CustomerLoadedState(
-        //     customers: updatedCustomers, addresses: (state as CustomerLoadedState).addresses));
       } catch (e) {
         emit(CustomerErrorState(error: e.toString()));
       }

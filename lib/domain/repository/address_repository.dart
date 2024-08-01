@@ -11,10 +11,8 @@ class AddressRepository {
 
   Future<List<AddressModel>> getAddressList() async {
     final prefs = await SharedPreferences.getInstance();
-    print("pref loaded: $prefs");
 
     final addressList = prefs.getStringList(AppLocalKeys.addresses) ?? [];
-    print("addressList loaded: $addressList");
 
     List<Map<String, dynamic>> addressJsonDataList =
         addressList.map((e) => jsonDecode(e) as Map<String, dynamic>).toList();
@@ -71,19 +69,9 @@ class AddressRepository {
 
   Future<List<AddressModel>> deleteSelectedAddress(int index) async {
     final prefs = await SharedPreferences.getInstance();
-    print("pref : $prefs");
     final addresses = prefs.getStringList(AppLocalKeys.addresses) ?? [];
-    print("before : $addresses");
     addresses.removeAt(index);
-    print("after : $addresses");
-    // final updatedAddresses = addresses.map((e) => jsonEncode(e)).toList();
     await prefs.setStringList(AppLocalKeys.addresses, addresses);
     return getAddressList();
-    //todo:
-    // if (addresses.isEmpty) {
-    //   selectedAddressId = null;
-    // } else if (selectedAddressId == addresses[index]['id']) {
-    //   selectedAddressId = addresses.first['id'];
-    // }
   }
 }

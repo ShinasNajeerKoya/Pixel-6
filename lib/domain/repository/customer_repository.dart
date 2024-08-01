@@ -78,17 +78,9 @@ class CustomerRepository {
   Future<List<CustomerModel>> deleteSelectedCustomer(int index) async {
     final prefs = await SharedPreferences.getInstance();
     final customers = prefs.getStringList(AppLocalKeys.customers) ?? [];
-    print("before : $customers");
     customers.removeAt(index);
-    print("after : $customers");
-    // final updatedCustomerStrings = customers.map((e) => jsonEncode(e)).toList();
     await prefs.setStringList(AppLocalKeys.customers, customers);
     return getCustomersList();
-    //todo:
-    // if (customers.isEmpty) {
-    //   selectedCustomerId = null;
-    // } else if (selectedCustomerId == customers[index]['id']) {
-    //   selectedCustomerId = customers.first['id'];
-    // }
+
   }
 }
