@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pixel6_test/core/constants/colors.dart';
+import 'package:pixel6_test/core/utils/size_config.dart';
 
 class CustomButton extends StatelessWidget {
   final void Function()? onTap;
@@ -11,22 +12,24 @@ class CustomButton extends StatelessWidget {
     super.key,
     required this.onTap,
     required this.title,
-    this.margin = const EdgeInsets.symmetric(horizontal: 25),
+    this.margin,
     this.isEnabled = true,
   });
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig.init(context);
     return GestureDetector(
       onTap: isEnabled ? onTap : null,
       child: AbsorbPointer(
         absorbing: !isEnabled,
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-          margin: margin,
+          padding:
+              EdgeInsets.symmetric(vertical: SizeConfig.getHeight(15), horizontal: SizeConfig.getWidth(15)),
+          margin: margin ?? EdgeInsets.symmetric(horizontal: SizeConfig.getWidth(25)),
           decoration: BoxDecoration(
             color: isEnabled ? MyColors.mainRedColor : Colors.grey.shade300,
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(SizeConfig.getRadius(8)),
           ),
           child: Center(
             child: Text(
@@ -34,7 +37,7 @@ class CustomButton extends StatelessWidget {
               style: TextStyle(
                 color: isEnabled ? Colors.white : Colors.grey.shade600,
                 fontWeight: FontWeight.bold,
-                fontSize: 20,
+                fontSize: SizeConfig.getFontSize(20),
               ),
             ),
           ),

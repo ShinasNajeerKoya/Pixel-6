@@ -40,6 +40,7 @@ class CustomersListingBloc extends Bloc<CustomersListingEvent, CustomersListingS
       final customersList = await fetchCustomerUseCase.getCustomersList();
 
       emit(CustomerLoadedState(customers: customersList, addresses: const []));
+
     } catch (e) {
       emit(CustomerErrorState(error: e.toString()));
     }

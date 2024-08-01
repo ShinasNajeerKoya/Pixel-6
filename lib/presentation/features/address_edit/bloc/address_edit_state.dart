@@ -1,4 +1,7 @@
-part of 'address_edit_bloc.dart';
+
+
+import 'package:equatable/equatable.dart';
+import 'package:pixel6_test/data/models/address_model.dart';
 
 abstract class AddressEditState extends Equatable {
   const AddressEditState();

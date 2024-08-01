@@ -20,4 +20,5 @@ class AppLocalKeys {
   static const customers = 'customers';
   static const customerId = 'customerId';
   static const addresses = 'addresses';
+  static const customersList = 'Customers List';
 }

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pixel6_test/config/bloc_provider.dart';
 import 'package:pixel6_test/core/constants/colors.dart';
 import 'package:pixel6_test/core/constants/local_keys.dart';
+import 'package:pixel6_test/core/utils/size_config.dart';
 import 'package:pixel6_test/data/models/address_model.dart';
 import 'package:pixel6_test/domain/constant_keys/customer_constant_keys.dart';
 import 'package:pixel6_test/presentation/features/address_edit/address_edit_page.dart';
@@ -117,6 +118,7 @@ class _CustomerEditPageState extends State<CustomerEditPage> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig.init(context);
     return StreamBuilder<String>(
         stream: customerEditBloc.selectedAddressIdStream,
         builder: (context, snapshot) {
@@ -138,7 +140,7 @@ class _CustomerEditPageState extends State<CustomerEditPage> {
                             title: widget.customerId == null
                                 ? AppLocalKeys.customerListing
                                 : AppLocalKeys.customerEditing,
-                            fontSize: 18,
+                            fontSize: SizeConfig.getFontSize(22),
                           ),
                           centerTitle: true,
                         ),
@@ -154,7 +156,7 @@ class _CustomerEditPageState extends State<CustomerEditPage> {
                               }
                             },
                             child: ListView(
-                              padding: const EdgeInsets.only(top: 20),
+                              padding: EdgeInsets.only(top: SizeConfig.getHeight(20)),
                               children: [
                                 Row(
                                   children: [
@@ -163,28 +165,28 @@ class _CustomerEditPageState extends State<CustomerEditPage> {
                                         controller: kPanAddressController,
                                         focusNode: panFocusNode,
                                         hintText: AppLocalKeys.panHintText,
-                                        padding: const EdgeInsets.only(left: 25, right: 15),
-                                        obscureText: false,
+                                        padding: EdgeInsets.only(
+                                            left: SizeConfig.getWidth(25), right: SizeConfig.getWidth(15)),
                                         suffixIcon: isLoading
                                             ? Container(
-                                                width: 10,
-                                                height: 10,
-                                                margin: const EdgeInsets.all(10),
+                                                width: SizeConfig.getWidth(10),
+                                                height: SizeConfig.getHeight(10),
+                                                margin: EdgeInsets.all(SizeConfig.getHeight(10)),
                                                 child: const CircularProgressIndicator(
                                                   strokeWidth: 1.5,
                                                 ),
                                               )
                                             : Container(
-                                                width: 10,
-                                                height: 10,
-                                                margin: const EdgeInsets.all(10),
+                                                width: SizeConfig.getWidth(10),
+                                                height: SizeConfig.getHeight(10),
+                                                margin: EdgeInsets.all(SizeConfig.getHeight(10)),
                                               ),
                                       ),
                                     ),
                                     CustomButton(
                                       title: 'Fetch',
                                       isEnabled: isPanValid,
-                                      margin: const EdgeInsets.only(right: 25),
+                                      margin: EdgeInsets.only(right: SizeConfig.getWidth(25)),
                                       onTap: isPanValid
                                           ? () => customerEditBloc.add(
                                               VerifyPanNumberEvent(panNumber: kPanAddressController.text))
@@ -194,14 +196,10 @@ class _CustomerEditPageState extends State<CustomerEditPage> {
                                 ),
                                 // PAN error message
                                 if (currentFocusNode == panFocusNode && !isPanValid)
-                                  const Padding(
-                                    padding: EdgeInsets.only(top: 8.0, left: 25.0),
-                                    child: Text(
-                                      'Invalid PAN format',
-                                      style: TextStyle(color: Colors.red, fontSize: 12),
-                                    ),
+                                  _showValidationErrorMessage(
+                                    errorMessage: 'Invalid PAN format',
                                   ),
-                                const SizedBox(height: 20),
+                                SizedBox(height: SizeConfig.getHeight(20)),
                                 BlocConsumer<CustomerEditBloc, CustomerEditState>(
                                   listener: (context, state) {
                                     if (state is PanNumberVerifiedState) {
@@ -212,46 +210,35 @@ class _CustomerEditPageState extends State<CustomerEditPage> {
                                     return CustomTextField(
                                       controller: fullNameAddressController,
                                       hintText: AppLocalKeys.fullNameHintText,
-                                      obscureText: false,
                                       readOnly: true,
                                     );
                                   },
                                 ),
-                                const SizedBox(height: 20),
+                                SizedBox(height: SizeConfig.getHeight(20)),
                                 CustomTextField(
                                   controller: emailAddressController,
                                   focusNode: emailFocusNode,
                                   hintText: AppLocalKeys.emailHintText,
-                                  obscureText: false,
                                 ),
                                 // Email error message
                                 if (currentFocusNode == emailFocusNode && !isEmailValid)
-                                  const Padding(
-                                    padding: EdgeInsets.only(top: 8.0, left: 25.0),
-                                    child: Text(
-                                      'Invalid email format',
-                                      style: TextStyle(color: Colors.red, fontSize: 12),
-                                    ),
+                                  _showValidationErrorMessage(
+                                    errorMessage: 'Invalid email format',
                                   ),
-                                const SizedBox(height: 20),
+                                SizedBox(height: SizeConfig.getHeight(20)),
                                 CustomTextField(
                                   controller: phoneAddressController,
                                   focusNode: phoneFocusNode,
                                   hintText: AppLocalKeys.phoneNumberHintText,
-                                  obscureText: false,
                                   keyboardType: TextInputType.phone,
                                   prefixText: "+91 |",
                                 ),
                                 // Phone number error message
                                 if (currentFocusNode == phoneFocusNode && !isPhoneValid)
-                                  const Padding(
-                                    padding: EdgeInsets.only(top: 8.0, left: 25.0),
-                                    child: Text(
-                                      'Invalid phone number format',
-                                      style: TextStyle(color: Colors.red, fontSize: 12),
-                                    ),
+                                  _showValidationErrorMessage(
+                                    errorMessage: 'Invalid phone number format',
                                   ),
-                                const SizedBox(height: 20),
+                                SizedBox(height: SizeConfig.getHeight(10)),
                                 Column(
                                   children: List.generate(addressList.length, (index) {
                                     final address = addressList[index];
@@ -313,19 +300,19 @@ class _CustomerEditPageState extends State<CustomerEditPage> {
                                     );
                                   }),
                                 ),
-                                const SizedBox(height: 10),
+                                SizedBox(height: SizeConfig.getHeight(10)),
                                 GestureDetector(
                                   onTap: addressList.length < 10 ? () => _navigateToEditAddress() : null,
                                   child: Column(
                                     children: [
                                       Container(
-                                        height: 50,
-                                        margin: const EdgeInsets.symmetric(horizontal: 25),
+                                        height: SizeConfig.getHeight(50),
+                                        margin: EdgeInsets.symmetric(horizontal: SizeConfig.getWidth(25)),
                                         decoration: BoxDecoration(
                                           color: addressList.length < 10
                                               ? MyColors.drawerSecondaryBg
                                               : Colors.grey.shade300,
-                                          borderRadius: BorderRadius.circular(5),
+                                          borderRadius: BorderRadius.circular(SizeConfig.getRadius(5)),
                                         ),
                                         child: Row(
                                           mainAxisAlignment: MainAxisAlignment.center,
@@ -336,10 +323,10 @@ class _CustomerEditPageState extends State<CustomerEditPage> {
                                                   ? Colors.black
                                                   : Colors.grey.shade600,
                                             ),
-                                            const SizedBox(width: 10),
+                                            SizedBox(height: SizeConfig.getHeight(10)),
                                             CustomText(
                                               title: AppLocalKeys.addAddressButtonText,
-                                              fontSize: 17,
+                                              fontSize: SizeConfig.getFontSize(18),
                                               fontColor: addressList.length < 10
                                                   ? Colors.black
                                                   : Colors.grey.shade600,
@@ -347,15 +334,13 @@ class _CustomerEditPageState extends State<CustomerEditPage> {
                                           ],
                                         ),
                                       ),
-                                      CustomText(
-                                        title: addressList.length < 10 ? "" : "Address limit reached.",
-                                        fontSize: 10,
-                                        fontColor: Colors.red,
-                                      )
+                                      _showValidationErrorMessage(
+                                        errorMessage: addressList.length < 10 ? '' : 'Address limit reached.',
+                                      ),
                                     ],
                                   ),
                                 ),
-                                const SizedBox(height: 10),
+                                SizedBox(height: SizeConfig.getHeight(10)),
                                 CustomButton(
                                   isEnabled: customerEditBloc.validateForm(),
                                   onTap: customerEditBloc.validateForm()
@@ -374,7 +359,7 @@ class _CustomerEditPageState extends State<CustomerEditPage> {
                                       ? AppLocalKeys.addCustomerButtonText
                                       : AppLocalKeys.saveCustomerButtonText,
                                 ),
-                                const SizedBox(height: 20),
+                                SizedBox(height: SizeConfig.getHeight(20)),
                                 BlocListener<CustomerEditBloc, CustomerEditState>(
                                   listener: (context, state) {
                                     if (state is CustomerDataSavedState) {
@@ -409,6 +394,16 @@ class _CustomerEditPageState extends State<CustomerEditPage> {
                 );
               });
         });
+  }
+
+  Padding _showValidationErrorMessage({required String errorMessage}) {
+    return Padding(
+      padding: EdgeInsets.only(top: SizeConfig.getHeight(8), left: SizeConfig.getWidth(25)),
+      child: Text(
+        errorMessage,
+        style: TextStyle(color: Colors.red, fontSize: SizeConfig.getFontSize(14)),
+      ),
+    );
   }
 
   Future<void> _navigateToEditAddress({String? addressId}) async {

@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pixel6_test/data/models/address_model.dart';
@@ -8,9 +7,10 @@ import 'package:pixel6_test/domain/use_case/delete_address_usecase.dart';
 import 'package:pixel6_test/domain/use_case/fetch_address_usecase.dart';
 import 'package:pixel6_test/domain/use_case/postcode_details_usecase.dart';
 import 'package:pixel6_test/domain/use_case/save_address_usecase.dart';
+import 'package:pixel6_test/presentation/features/address_edit/bloc/address_edit_event.dart';
+import 'package:pixel6_test/presentation/features/address_edit/bloc/address_edit_state.dart';
 
-part 'address_edit_event.dart';
-part 'address_edit_state.dart';
+
 
 class AddressEditBloc extends Bloc<AddressEditEvent, AddressEditState> {
   final line1AddressController = TextEditingController();

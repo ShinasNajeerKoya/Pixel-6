@@ -173,8 +173,6 @@ class CustomerEditBloc extends Bloc<CustomerEditEvent, CustomerEditState> {
     panError = isPanValid ? '' : 'Invalid PAN format';
     validateForm();
 
-    // _updateValidationStatus(InputTypeEnum.pan, isPanValid);
-
     return isPanValid;
   }
 
@@ -184,8 +182,6 @@ class CustomerEditBloc extends Bloc<CustomerEditEvent, CustomerEditState> {
     isEmailValid = regex.hasMatch(email);
     validateForm();
 
-    // _updateValidationStatus(InputTypeEnum.email, isEmailValid);
-
     return isEmailValid;
   }
 
@@ -194,7 +190,6 @@ class CustomerEditBloc extends Bloc<CustomerEditEvent, CustomerEditState> {
     isPhoneValid = regex.hasMatch(phone);
     validateForm();
 
-    // _updateValidationStatus(InputTypeEnum.phone, isPhoneValid);
     return isPhoneValid;
   }
 

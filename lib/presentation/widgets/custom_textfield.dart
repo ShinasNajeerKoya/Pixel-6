@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pixel6_test/core/utils/size_config.dart';
 import 'package:pixel6_test/presentation/widgets/custom_text.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -19,7 +20,7 @@ class CustomTextField extends StatelessWidget {
     required this.hintText,
     this.obscureText = false,
     this.onChanged,
-    this.padding = const EdgeInsets.symmetric(horizontal: 25.0),
+    this.padding,
     this.readOnly = false,
     this.prefixText,
     this.suffixIcon,
@@ -29,8 +30,9 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig.init(context);
     return Padding(
-      padding: padding!,
+      padding: padding ?? EdgeInsets.symmetric(horizontal: SizeConfig.getWidth(27)),
       child: TextField(
         onTapOutside: (event) {
           FocusScope.of(context).unfocus();
@@ -44,10 +46,10 @@ class CustomTextField extends StatelessWidget {
         decoration: InputDecoration(
           prefixIcon: prefixText != null
               ? Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  padding: EdgeInsets.symmetric(horizontal: SizeConfig.getWidth(10)),
                   child: CustomText(
                     title: prefixText!,
-                    fontSize: 16,
+                    fontSize: SizeConfig.getFontSize(18),
                   ),
                 )
               : null,

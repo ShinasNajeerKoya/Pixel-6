@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pixel6_test/config/bloc_provider.dart';
 import 'package:pixel6_test/core/constants/colors.dart';
+import 'package:pixel6_test/core/constants/local_keys.dart';
+import 'package:pixel6_test/core/utils/size_config.dart';
 import 'package:pixel6_test/presentation/features/customer/customers_listing/bloc/customers_listing_bloc.dart';
 import 'package:pixel6_test/presentation/features/customer/customers_listing/widget/customer_listing_card_widget.dart';
 import 'package:pixel6_test/presentation/widgets/custom_text.dart';
@@ -11,6 +13,7 @@ class CustomersListingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig.init(context);
     final bloc = provideCustomersListingBloc();
     return BlocProvider(
       create: (_) => bloc..add(LoadCustomersEvent()),
@@ -18,9 +21,9 @@ class CustomersListingPage extends StatelessWidget {
         backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: Colors.white,
-          title: const CustomText(
-            title: "Customers List",
-            fontSize: 20,
+          title: CustomText(
+            title: AppLocalKeys.customersList,
+            fontSize: SizeConfig.getFontSize(22),
           ),
           centerTitle: true,
         ),
@@ -30,10 +33,10 @@ class CustomersListingPage extends StatelessWidget {
               return const Center(child: CircularProgressIndicator());
             } else if (state is CustomerLoadedState) {
               return state.customers.isEmpty
-                  ? const Center(
+                  ? Center(
                       child: CustomText(
                         title: "No customers available.",
-                        fontSize: 16,
+                        fontSize: SizeConfig.getFontSize(18),
                       ),
                     )
                   : ListView.builder(
@@ -57,7 +60,7 @@ class CustomersListingPage extends StatelessWidget {
               return Center(
                 child: CustomText(
                   title: "An error occurred: ${state.error}",
-                  fontSize: 16,
+                  fontSize: SizeConfig.getFontSize(18),
                   fontColor: Colors.red,
                 ),
               );

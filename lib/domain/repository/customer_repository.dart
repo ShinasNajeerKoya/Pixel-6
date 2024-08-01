@@ -81,6 +81,5 @@ class CustomerRepository {
     customers.removeAt(index);
     await prefs.setStringList(AppLocalKeys.customers, customers);
     return getCustomersList();
-
   }
 }
