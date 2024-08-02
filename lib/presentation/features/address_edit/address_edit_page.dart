@@ -71,6 +71,7 @@ class _AddressEditPageState extends State<AddressEditPage> {
                         CustomTextField(
                           controller: addressBloc.line2AddressController,
                           hintText: AppLocalKeys.addressLine2HintText,
+                          isRequired: false,
                           onChanged: (_) {
                             addressBloc.isAddressEntryValid();
                           },

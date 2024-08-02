@@ -17,6 +17,7 @@ class CustomersListingPage extends StatefulWidget {
 
 class _CustomersListingPageState extends State<CustomersListingPage> {
   late CustomersListingBloc bloc;
+
   @override
   void initState() {
     bloc = provideCustomersListingBloc()..add(LoadCustomersEvent());

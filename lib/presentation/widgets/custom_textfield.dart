@@ -13,6 +13,7 @@ class CustomTextField extends StatelessWidget {
   final Widget? suffixIcon;
   final FocusNode? focusNode;
   final TextInputType? keyboardType;
+  final bool? isRequired;
 
   const CustomTextField({
     super.key,
@@ -26,6 +27,7 @@ class CustomTextField extends StatelessWidget {
     this.suffixIcon,
     this.focusNode,
     this.keyboardType,
+    this.isRequired = true,
   });
 
   @override
@@ -44,6 +46,12 @@ class CustomTextField extends StatelessWidget {
         readOnly: readOnly!,
         keyboardType: keyboardType,
         decoration: InputDecoration(
+          fillColor: Colors.white,
+          filled: true,
+          hintText: hintText,
+          hintStyle: TextStyle(color: Colors.grey[500]),
+          prefixIconConstraints: const BoxConstraints(minWidth: 0, minHeight: 0),
+          suffixIcon: suffixIcon,
           prefixIcon: prefixText != null
               ? Padding(
                   padding: EdgeInsets.symmetric(horizontal: SizeConfig.getWidth(10)),
@@ -53,18 +61,23 @@ class CustomTextField extends StatelessWidget {
                   ),
                 )
               : null,
-          prefixIconConstraints: const BoxConstraints(minWidth: 0, minHeight: 0),
-          suffixIcon: suffixIcon,
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.grey.shade400),
           ),
           focusedBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.grey),
           ),
-          fillColor: Colors.white,
-          filled: true,
-          hintText: hintText,
-          hintStyle: TextStyle(color: Colors.grey[500]),
+          label: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CustomText(title: hintText),
+              if (isRequired!)
+                const CustomText(
+                  title: " *",
+                  fontColor: Colors.red,
+                ),
+            ],
+          ),
         ),
       ),
     );
