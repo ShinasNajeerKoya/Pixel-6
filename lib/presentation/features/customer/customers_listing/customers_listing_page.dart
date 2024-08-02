@@ -8,15 +8,26 @@ import 'package:pixel6_test/presentation/features/customer/customers_listing/blo
 import 'package:pixel6_test/presentation/features/customer/customers_listing/widget/customer_listing_card_widget.dart';
 import 'package:pixel6_test/presentation/widgets/custom_text.dart';
 
-class CustomersListingPage extends StatelessWidget {
+class CustomersListingPage extends StatefulWidget {
   const CustomersListingPage({super.key});
+
+  @override
+  State<CustomersListingPage> createState() => _CustomersListingPageState();
+}
+
+class _CustomersListingPageState extends State<CustomersListingPage> {
+  late CustomersListingBloc bloc;
+  @override
+  void initState() {
+    bloc = provideCustomersListingBloc()..add(LoadCustomersEvent());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     SizeConfig.init(context);
-    final bloc = provideCustomersListingBloc();
     return BlocProvider(
-      create: (_) => bloc..add(LoadCustomersEvent()),
+      create: (_) => bloc,
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(

@@ -17,6 +17,17 @@ class AddressModel {
     required this.stateName,
   });
 
+  factory AddressModel.emptyAddress() {
+    return AddressModel(
+      id: "",
+      line1: AddressConstantKeys.noAddressAvailable,
+      line2: AddressConstantKeys.noAddressAvailable,
+      postcode: AddressConstantKeys.noAddressAvailable,
+      city: AddressConstantKeys.noAddressAvailable,
+      stateName: AddressConstantKeys.noAddressAvailable,
+    );
+  }
+
   // this is factory constructor for creating a new AddressModel instance from a map.
   factory AddressModel.fromJson(Map<String, dynamic> json) {
     return AddressModel(

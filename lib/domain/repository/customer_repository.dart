@@ -16,15 +16,14 @@ class CustomerRepository {
     final List<CustomerModel> customersModelList = [];
 
     final prefs = await SharedPreferences.getInstance();
-
     final customerList = prefs.getStringList(AppLocalKeys.customers) ?? [];
-
     List<Map<String, dynamic>> customersJsonDataList =
         customerList.map((e) => jsonDecode(e) as Map<String, dynamic>).toList();
 
     for (final customerData in customersJsonDataList) {
       final addressModel =
           await addressRepository.fetchAddressById(customerData[CustomerConstantKeys.addressId]);
+
       final customerModel = CustomerModel.fromJson(customerData, addressModel: addressModel);
       customersModelList.add(customerModel);
     }
@@ -40,8 +39,10 @@ class CustomerRepository {
     final customerResponse = customersString
         .map((e) => jsonDecode(e) as Map<String, dynamic>)
         .firstWhere((a) => a[CustomerConstantKeys.customerId] == customerId, orElse: () => {});
+
     final addressModel =
         await addressRepository.fetchAddressById(customerResponse[CustomerConstantKeys.addressId]);
+
     customerModel = CustomerModel.fromJson(customerResponse, addressModel: addressModel);
 
     return customerModel;

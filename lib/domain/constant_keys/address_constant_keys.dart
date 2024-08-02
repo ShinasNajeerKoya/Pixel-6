@@ -6,6 +6,6 @@ class AddressConstantKeys {
   static const String postcode = 'postcode';
   static const String city = 'city';
   static const String state = 'state';
+  static const String noAddressAvailable = 'No Address available';
+  static const String addressIdMissing = 'addressId is missing';
 }
-
-

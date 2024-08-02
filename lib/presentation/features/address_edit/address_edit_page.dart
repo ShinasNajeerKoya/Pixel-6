@@ -87,17 +87,17 @@ class _AddressEditPageState extends State<AddressEditPage> {
                                 keyboardType: TextInputType.phone,
                                 suffixIcon: addressBloc.isLoading
                                     ? Container(
-                                        width: SizeConfig.getWidth(10),
-                                        height: SizeConfig.getHeight(10),
-                                        margin: EdgeInsets.all(SizeConfig.getHeight(10)),
+                                        width: SizeConfig.getWidth(15),
+                                        height: SizeConfig.getHeight(15),
+                                        margin: EdgeInsets.all(SizeConfig.getHeight(15)),
                                         child: const CircularProgressIndicator(
                                           strokeWidth: 1.5,
                                         ),
                                       )
                                     : Container(
-                                        width: SizeConfig.getWidth(10),
-                                        height: SizeConfig.getHeight(10),
-                                        margin: EdgeInsets.all(SizeConfig.getHeight(10)),
+                                        width: SizeConfig.getWidth(15),
+                                        height: SizeConfig.getHeight(15),
+                                        margin: EdgeInsets.all(SizeConfig.getHeight(15)),
                                       ),
                                 onChanged: (postcode) {
                                   addressBloc.add(ValidatePostcodeEvent(postcode));

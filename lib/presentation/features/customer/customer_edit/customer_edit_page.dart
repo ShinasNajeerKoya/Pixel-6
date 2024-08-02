@@ -150,7 +150,7 @@ class _CustomerEditPageState extends State<CustomerEditPage> {
                               if (state is CustomerDataLoadedState) {
                                 final customer = state.customer;
                                 kPanAddressController.text = customer.pan;
-                                fullNameAddressController.text = customer.fullName;
+                                // fullNameAddressController.text = customer.fullName;
                                 emailAddressController.text = customer.email;
                                 phoneAddressController.text = customer.phone;
                               }
@@ -167,19 +167,19 @@ class _CustomerEditPageState extends State<CustomerEditPage> {
                                         hintText: AppLocalKeys.panHintText,
                                         padding: EdgeInsets.only(
                                             left: SizeConfig.getWidth(25), right: SizeConfig.getWidth(15)),
-                                        suffixIcon: isLoading
+                                        suffixIcon: customerEditBloc.isLoading
                                             ? Container(
-                                                width: SizeConfig.getWidth(10),
-                                                height: SizeConfig.getHeight(10),
-                                                margin: EdgeInsets.all(SizeConfig.getHeight(10)),
+                                                width: SizeConfig.getWidth(15),
+                                                height: SizeConfig.getHeight(15),
+                                                margin: EdgeInsets.all(SizeConfig.getHeight(15)),
                                                 child: const CircularProgressIndicator(
                                                   strokeWidth: 1.5,
                                                 ),
                                               )
                                             : Container(
-                                                width: SizeConfig.getWidth(10),
-                                                height: SizeConfig.getHeight(10),
-                                                margin: EdgeInsets.all(SizeConfig.getHeight(10)),
+                                                width: SizeConfig.getWidth(15),
+                                                height: SizeConfig.getHeight(15),
+                                                margin: EdgeInsets.all(SizeConfig.getHeight(15)),
                                               ),
                                       ),
                                     ),
@@ -188,8 +188,10 @@ class _CustomerEditPageState extends State<CustomerEditPage> {
                                       isEnabled: isPanValid,
                                       margin: EdgeInsets.only(right: SizeConfig.getWidth(25)),
                                       onTap: isPanValid
-                                          ? () => customerEditBloc.add(
-                                              VerifyPanNumberEvent(panNumber: kPanAddressController.text))
+                                          ? () {
+                                              customerEditBloc.add(VerifyPanNumberEvent(
+                                                  panNumber: kPanAddressController.text));
+                                            }
                                           : null,
                                     ),
                                   ],

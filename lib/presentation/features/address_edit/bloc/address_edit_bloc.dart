@@ -10,8 +10,6 @@ import 'package:pixel6_test/domain/use_case/save_address_usecase.dart';
 import 'package:pixel6_test/presentation/features/address_edit/bloc/address_edit_event.dart';
 import 'package:pixel6_test/presentation/features/address_edit/bloc/address_edit_state.dart';
 
-
-
 class AddressEditBloc extends Bloc<AddressEditEvent, AddressEditState> {
   final line1AddressController = TextEditingController();
   final line2AddressController = TextEditingController();
@@ -89,6 +87,7 @@ class AddressEditBloc extends Bloc<AddressEditEvent, AddressEditState> {
   Future<void> _onFetchCityStateDetails(
       FetchCityStateDetailsEvent event, Emitter<AddressEditState> emit) async {
     emit(AddressLoadingState());
+    isLoading = true;
     try {
       final postalCodeData =
           await postCodeDetailsUseCase.fetchPostCodeDetails(postcodeAddressController.text);
@@ -96,6 +95,7 @@ class AddressEditBloc extends Bloc<AddressEditEvent, AddressEditState> {
       if (postalCodeData != null) {
         cityAddressController.text = postalCodeData.city.first.name;
         stateAddressController.text = postalCodeData.state.first.name;
+        isLoading = false;
       } else {
         emit(const AddressErrorState('Invalid postcode'));
       }

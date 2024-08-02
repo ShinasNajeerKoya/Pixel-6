@@ -11,12 +11,11 @@ class CustomerLoadingState extends CustomersListingState {}
 
 class CustomerLoadedState extends CustomersListingState {
   final List<CustomerModel> customers;
-  final List<AddressModel> addresses;
 
-  const CustomerLoadedState({required this.customers, required this.addresses});
+  const CustomerLoadedState({required this.customers});
 
   @override
-  List<Object> get props => [customers, addresses];
+  List<Object> get props => [customers];
 }
 
 class CustomerErrorState extends CustomersListingState {

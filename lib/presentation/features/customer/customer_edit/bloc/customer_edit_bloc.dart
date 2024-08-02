@@ -37,6 +37,7 @@ class CustomerEditBloc extends Bloc<CustomerEditEvent, CustomerEditState> {
   String selectedAddressId = '';
   List<AddressModel> addressList = [];
   bool isPanValid = false;
+  bool isFullNameValid = false;
   bool isEmailValid = false;
   bool isPhoneValid = false;
   bool isLoading = false;
@@ -84,7 +85,6 @@ class CustomerEditBloc extends Bloc<CustomerEditEvent, CustomerEditState> {
   Future<void> _onLoadAllAddressDataEvent(
       LoadAllAddressDataEvent event, Emitter<CustomerEditState> emit) async {
     emit(AddressDataLoadingState());
-
     try {
       final list = await fetchAddressUseCase.getAddressList();
       addressList = list;
@@ -130,8 +130,10 @@ class CustomerEditBloc extends Bloc<CustomerEditEvent, CustomerEditState> {
   Future<void> _onVerifyPanNumberEvent(VerifyPanNumberEvent event, Emitter<CustomerEditState> emit) async {
     try {
       emit(PanNumberVerifyingState());
+      isLoading = true;
 
       final panData = await panCardDetailsUseCase.fetchPostCodeDetails(event.panNumber);
+
       if (panData == null) {
         panError = 'Failed to verify PAN';
         emit(const PanNumberVerifyFailureState('Failed to verify PAN'));
@@ -139,6 +141,8 @@ class CustomerEditBloc extends Bloc<CustomerEditEvent, CustomerEditState> {
         // fullNameAddressController.text = panData.fullName;
         panError = '';
         emit(PanNumberVerifiedState(panData));
+        isLoading = false;
+        isFullNameValid = true;
       } else {
         panError = 'Invalid pan number';
         emit(const PanNumberVerifyFailureState('Invalid pan number'));
@@ -194,11 +198,13 @@ class CustomerEditBloc extends Bloc<CustomerEditEvent, CustomerEditState> {
   }
 
   bool validateForm() {
-    bool isFormValid = isPanValid && isEmailValid && isPhoneValid && selectedAddressId.isNotEmpty;
-    if (addressList.isEmpty) {
+    bool isFormValid =
+        isPanValid && isFullNameValid && isEmailValid && isPhoneValid && selectedAddressId.isNotEmpty;
+    if (addressList.isEmpty && selectedAddressId.isEmpty) {
       isFormValid = false;
     }
-    isFormValid = isPanValid && isEmailValid && isPhoneValid && selectedAddressId.isNotEmpty;
+    isFormValid =
+        isPanValid && isFullNameValid && isEmailValid && isPhoneValid && selectedAddressId.isNotEmpty;
     return isFormValid;
   }
 
@@ -206,13 +212,6 @@ class CustomerEditBloc extends Bloc<CustomerEditEvent, CustomerEditState> {
     selectedAddressId = id;
     _selectedAddressIdStreamController.add(id);
   }
-
-// void _updateValidationStatus(InputTypeEnum inputType, bool status) async {
-//   final currentStatus = await inputValidationStatusStream.first;
-//   final updatedStatus = Map<InputTypeEnum, bool>.from(currentStatus);
-//   updatedStatus[inputType] = status;
-//   _inputValidationStatusStreamController.add(updatedStatus);
-// }
 }
 
 enum InputTypeEnum { pan, email, phone }

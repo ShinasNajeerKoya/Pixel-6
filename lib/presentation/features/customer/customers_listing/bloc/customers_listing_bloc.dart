@@ -5,7 +5,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pixel6_test/core/constants/local_keys.dart';
-import 'package:pixel6_test/data/models/address_model.dart';
 import 'package:pixel6_test/data/models/customer_model.dart';
 import 'package:pixel6_test/domain/use_case/delete_customer_usecase.dart';
 import 'package:pixel6_test/domain/use_case/fetch_address_usecase.dart';
@@ -36,11 +35,8 @@ class CustomersListingBloc extends Bloc<CustomersListingEvent, CustomersListingS
   Future<void> _onLoadCustomers(LoadCustomersEvent event, Emitter<CustomersListingState> emit) async {
     try {
       emit(CustomerLoadingState());
-
       final customersList = await fetchCustomerUseCase.getCustomersList();
-
-      emit(CustomerLoadedState(customers: customersList, addresses: const []));
-
+      emit(CustomerLoadedState(customers: customersList));
     } catch (e) {
       emit(CustomerErrorState(error: e.toString()));
     }
@@ -50,7 +46,7 @@ class CustomersListingBloc extends Bloc<CustomersListingEvent, CustomersListingS
     try {
       await deleteCustomerUseCase.deleteSelectedCustomer(event.index).then((value) {
         if (value.isNotEmpty) {
-          emit(CustomerLoadedState(customers: value, addresses: const []));
+          emit(CustomerLoadedState(customers: value));
         } else {
           emit(const CustomerErrorState(error: 'No Customers available.'));
         }
@@ -73,7 +69,6 @@ class CustomersListingBloc extends Bloc<CustomersListingEvent, CustomersListingS
           updatedCustomers[index] = event.customer;
           final updatedCustomerStrings = updatedCustomers.map((e) => jsonEncode(e)).toList();
           await prefs.setStringList(AppLocalKeys.customers, updatedCustomerStrings);
-
         }
       } catch (e) {
         emit(CustomerErrorState(error: e.toString()));
@@ -89,7 +84,6 @@ class CustomersListingBloc extends Bloc<CustomersListingEvent, CustomersListingS
         updatedCustomers.add(event.customer);
         final updatedCustomerStrings = updatedCustomers.map((e) => jsonEncode(e)).toList();
         await prefs.setStringList(AppLocalKeys.customers, updatedCustomerStrings);
-
       } catch (e) {
         emit(CustomerErrorState(error: e.toString()));
       }

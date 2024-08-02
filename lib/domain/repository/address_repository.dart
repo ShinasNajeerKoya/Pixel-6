@@ -28,8 +28,12 @@ class AddressRepository {
     final addressResponse = addressesString
         .map((e) => jsonDecode(e) as Map<String, dynamic>)
         .firstWhere((a) => a[AddressConstantKeys.id] == addressId, orElse: () => {});
-    addressModel = AddressModel.fromJson(addressResponse);
 
+    if (addressResponse.isEmpty) {
+      addressModel = AddressModel.emptyAddress();
+    } else {
+      addressModel = AddressModel.fromJson(addressResponse);
+    }
     return addressModel;
   }
 
